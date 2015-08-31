@@ -76,8 +76,8 @@ public class Helper {
 		if(stun_server!=null && !stun_server.equals(""))	
 			return "STUN " + stun_server;		 
 		else
-			//return "STUN stun.services.mozilla.com";
-		    return "STUN stun.l.google.com:19302";
+			return "STUN stun.services.mozilla.com";
+		    //return "STUN stun.l.google.com:19302";
 	}
 
 	
