@@ -1,0 +1,442 @@
+<!-- BEGIN: main -->
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="canonical" href="{room_link}" />
+<title>Aplicacion WebRTC</title>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div id="footer">Iniciando...</div>
+	<div id="container" ondblclick="enterFullScreen()">
+		<div id="card">
+			<div id="local">
+				<video width="100%" height="100%" id="localVideo"
+					autoplay="autoplay"></video>
+			</div>
+			<div id="remote">
+				<video id="remoteVideo"
+					autoplay="autoplay"></video>
+				<div id="mini">
+					<video width="100%" height="100%" id="miniVideo"
+						autoplay="autoplay"></video>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		//var peerConnectionConfig = {'iceServers': [{'url': 'stun:stun.services.mozilla.com'}, {'url': 'stun:stun.l.google.com:19302'}]};
+
+		navigator.getUserMedia = navigator.getUserMedia
+				|| navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+		window.RTCPeerConnection = window.RTCPeerConnection
+				|| window.mozRTCPeerConnection
+				|| window.webkitRTCPeerConnection;
+		window.RTCIceCandidate = window.RTCIceCandidate
+				|| window.mozRTCIceCandidate || window.webkitRTCIceCandidate;
+		window.RTCSessionDescription = window.RTCSessionDescription
+				|| window.mozRTCSessionDescription
+				|| window.webkitRTCSessionDescription;
+
+		var localVideo;
+		var miniVideo;
+		var remoteVideo;
+		var localStream;
+		var channel;
+		var channelReady = false;
+		var pc;
+		var socket;
+		var initiator = {initiator};
+		var time = new Date();
+		var started = false;
+		var footer;
+		var channelToken = '{token}';
+		var roomKey = '{room_key}';
+		var me = '{me}';
+		var time0;
+		var time1;
+
+		var peerConnectionConfig = {
+			'iceServers' : [ {
+				'urls' : 'stun:stun.services.mozilla.com'
+			}, {
+				'urls' : 'stun:stun.l.google.com:19302'
+			} ]
+		};
+		function initialize() {
+			time0 = new Date();
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			console.log(t + " Iniciando...; room={room_key}.");
+			card = document.getElementById("card");
+			localVideo = document.getElementById("localVideo");
+			miniVideo = document.getElementById("miniVideo");
+			remoteVideo = document.getElementById("remoteVideo");
+			footer = document.getElementById("footer");
+			resetStatus();
+			openChannel();
+			getUserMedia();
+		}
+
+		function openChannel() {
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			console.log(t + " Abriendo el canal.");
+			var location = "ws://{server_name}:8081/";
+			channel = new WebSocket(location);
+			channel.onopen = onChannelOpened;
+			channel.onmessage = onChannelMessage;
+			channel.onclose = onChannelClosed;
+			channel.onerror = onChannelError;
+		}
+
+		function resetStatus() {
+			if (!initiator) {
+				setStatus("Esperando alguien para unirse: <a href=\"{room_link}\">{room_link}</a>");
+			} else {
+				setStatus("Iniciando...");
+			}
+			;
+		}
+
+		function getUserMedia() {
+			try {
+				time1 = new Date();
+				var t = time1.getTime() - time0.getTime();
+				navigator.getUserMedia({
+					audio : true,
+					video : true,
+				}, onUserMediaSuccess, onUserMediaError);
+				console
+						.log(t
+								+ " Acceso solicitado al medio local con la nueva sintaxis");
+
+			} catch (e) {
+				try {
+					navigator.getUserMedia("video,audio", onUserMediaSuccess,
+							onUserMediaError);
+					console
+							.log("Acceso solicitado al medio local con la antigüa sintaxis");
+				} catch (e) {
+					alert("getUserMedia() ha fallado. Esta la opcion(flag) de MediaStream activa(enabled) en -> about:flags?");
+					console.log("getUserMedia() ha fallado con la excepcion: "
+							+ e.message);
+				}
+				;
+			}
+			;
+		}
+
+		function createPeerConnection() {
+			try {
+				//pc = new webkitPeerConnection00("{pc_config}", onIceCandidate);
+				pc = new window.RTCPeerConnection(peerConnectionConfig);//firefox
+				time1 = new Date();
+				var t = time1.getTime() - time0.getTime();
+				console
+						.log(t
+								+ " Creada la RTCPeerConnection con la configuracion \"{pc_config}\".");
+			} catch (e) {
+				console.log("Fallo al crear la PeerConnection, excepcion: "
+						+ e.message);
+				alert("No se puede crear el objeto PeerConnection; Esta la opcion(flag) 'PeerConnection' activada(enabled) en about:flags?");
+				return;
+			}
+
+			pc.onconnecting = onSessionConnecting;
+			pc.onopen = onSessionOpened;
+			pc.onaddstream = onRemoteStreamAdded;
+			pc.onicecandidate = onIceCandidate;
+			pc.onremovestream = onRemoteStreamRemoved;
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			console.log(t + "Salgo de createPeerConnection()");
+		}
+
+		function maybeStart() {
+			if (!started && localStream && channelReady) {
+				time1 = new Date();
+				var t = time1.getTime() - time0.getTime();
+				setStatus("Conectando...");
+				time1 = new Date();
+				t = time1.getTime() - time0.getTime();
+				console.log(t +" Creando PeerConnection.");
+				createPeerConnection();
+				time1 = new Date();
+				t = time1.getTime() - time0.getTime();
+				console.log(t + "Anadiendo el stream local. Initiator = " + initiator);
+				pc.addStream(localStream);
+				started = true;
+				// Caller initiates offer to peer.
+				if (initiator)
+					doCall();
+			}
+		}
+
+		function setStatus(state) {
+			footer.innerHTML = state;
+		}
+
+		function doCall() {
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			console.log(t + "Usuario: " + initiator + " - Envia la oferta al peer");
+			pc.createOffer(gotDescription, infoHandler, errorHandler);
+			//sendMessage({type: 'offer', sdp: offer.sdp,});   
+			//pc.startIce();
+		}
+		function gotDescription(description) {
+			try {
+				time1 = new Date();
+				var t = time1.getTime() - time0.getTime();
+				console.log(t + ' Got description');// con la descripcion: '+ JSON.stringify(description));
+				pc.setLocalDescription(description, function() {
+					sendMessage(description);
+				}, errorHandler);
+
+			} catch (err) {
+				errorHandler(err.message);
+
+			}
+			;
+		}
+		function errorHandler(error) {
+			console.log("ERROR -> " + error);
+		}
+		function infoHandler(info) {
+			console.log("INFO -> " + info);
+		}
+		/*
+		function doAnswer() {
+		  console.log("Send answer to peer");
+		  var offer = pc.remoteDescription;
+		  var answer = pc.createAnswer(offer.sdp, {audio:true,video:true,});
+		  pc.setLocalDescription(pc.SDP_ANSWER, answer);
+		  sendMessage({type: 'answer', sdp: answer.sdp,});
+		  //pc.startIce();
+		}*/
+
+		function sendMessage(message) {
+			try{
+
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			var msgString = JSON.stringify(message);
+			console.log(t + ' C -> S: ' + msgString);
+			path = '/{PATH}/message?r={room_key}' + '&u={me}';
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', path, true);
+			xhr.send(msgString);
+			}catch(error){
+				console.log(error);
+			};
+
+		}
+
+		function processSignalingMessage(message) {
+			if (message) {
+				var msg = JSON.parse(message);
+				//console.log("Processing signaling message:\n Msg type: " + msg.type); 
+				if (msg.type === 'offer') {
+					/*Callee creates PeerConnection*/
+					if (!initiator && !started) {
+						maybeStart();
+					}
+
+					pc.setRemoteDescription(new RTCSessionDescription(msg),
+							function() {
+								pc.createAnswer(function(answer) {
+									pc.setLocalDescription(
+											new RTCSessionDescription(answer),
+											function() {
+												// send the answer to a server to be forwarded back to the caller (you)
+												sendMessage(answer);
+											}, errorHandler);
+								}, errorHandler);
+							}, errorHandler);
+				} else if (msg.type === 'answer' && started) {
+
+					pc.setRemoteDescription(new RTCSessionDescription(msg));
+					console.log("Answer RemoteDescription anadido");
+					
+
+				} else if (msg.type === 'candidate' && started) {
+
+					var candidate = new window.RTCIceCandidate(msg.ice);
+					if (pc.addIceCandidate(candidate)){
+
+						time1 = new Date();
+					var t = time1.getTime() - time0.getTime();
+					console.log(t + " Candidato anadido correctamente "
+							+ candidate.candidate);
+					}
+					//console.log("Anadido el candidato:" + cadidate);
+				} else if (msg.type === 'bye' && started) {
+					onRemoteHangup();
+				}
+			};
+		}
+
+		function onChannelOpened() {
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			console.log(t + ' Canal abierto para el token: {token}');
+			channel.send('token:{token}');
+			channelReady = true;
+
+			if (initiator)
+				maybeStart();
+		}
+		function onChannelMessage(message) {
+		
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			console.log(t + ' S -> C: ' + message.data);
+			processSignalingMessage(message.data);
+			
+		}
+		function onChannelError() {
+			console.log('Channel error for token: {token}');
+		}
+		function onChannelClosed() {
+			console.log('Canal cerrado para el token: {token}');
+			alert('Canal cerrado por el usuario ' + (initiator + 1)
+					+ ' con el token {token}.');
+			channel = null;
+		}
+
+		function onUserMediaSuccess(stream) {
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			console.log(t
+					+ " Usuario se le ha concedido el acceso al medio local.");
+			//var url = webkitURL.createObjectURL(stream);
+			var url = window.URL.createObjectURL(stream);
+			localVideo.style.opacity = 1;
+			localVideo.src = url;
+			localStream = stream;
+			// Caller creates PeerConnection.
+			console.log("Initiator: " + initiator);
+			if (initiator) {
+				maybeStart();
+			}
+			;
+		}
+		function onUserMediaError(error) {
+			console
+					.log("Ha fallado el acceso al medio local. El codigo de error es: "
+							+ error.code);
+			alert("Ha fallado el acceso al medio local. El codigo de error es: "
+					+ error.code + ".");
+		}
+
+		function onIceCandidate(event) {
+
+			time1 = new Date();
+			var t = time1.getTime() - time0.getTime();
+			if (!pc || !event || !event.candidate) {
+				console.log(t + " End of candidates.");
+				return;
+			} else {
+				
+				sendMessage({
+					type : 'candidate',
+					'ice' : event.candidate,
+					//'candidate' :event.candidate.candidate,
+					
+				});
+
+			};
+		}
+
+		function onSessionConnecting(message) {
+			console.log("Conectando la sesion.");
+		}
+		function onSessionOpened(message) {
+			console.log("Sesion abierta.");
+		}
+
+		function onRemoteStreamAdded(event) {
+			console.log("Stream remoto anadido.");
+			var url = window.URL.createObjectURL(event.stream);
+			console.log("Url -> " + url);
+			miniVideo.src = localVideo.src;
+			miniVideo.style.width = "50%";
+			localVideo.style.display = "none";
+			remoteVideo.src = url;
+			waitForRemoteVideo();
+		}
+		function onRemoteStreamRemoved(event) {
+			console.log("Remote stream removed.");
+		}
+
+		function onHangup() {
+			console.log("Hanging up.");
+			started = false; // Stop processing any message
+			transitionToDone();
+			pc.close();
+			// will trigger BYE from server
+			//socket.close();
+			channel.close();
+			pc = null;
+			//socket = null;
+			channel = null;
+		}
+
+		function onRemoteHangup() {
+			console.log('Sesion terminada.');
+			started = false; // Stop processing any message
+			transitionToWaiting();
+			pc.close();
+			pc = null;
+			initiator = 0;
+		}
+
+		function waitForRemoteVideo() {
+			console.log("Esperado el video remoto.");
+			if (remoteVideo) {
+				transitionToActive();
+			} else {
+				setTimeout(waitForRemoteVideo, 100);
+			}
+		}
+		function transitionToActive() {
+			console.log("Video conferencia en estado ACTIVO.");
+			//remoteVideo.style.opacity = 1;
+			//card.style.webkitTransform = "rotateY(180deg)";
+			//setTimeout(function() { localVideo.src = ""; }, 500);
+			//setTimeout(function() { miniVideo.style.opacity = 1; }, 1000);
+			setStatus("<input type=\"button\" id=\"hangup\" value=\"Hang up\" onclick=\"onHangup()\" />");
+		}
+		function transitionToWaiting() {
+			console.log("Video conferencia en estado ESPERA.");
+			// card.style.webkitTransform = "rotateY(0deg)";
+			setTimeout(function() {
+				localVideo.src = miniVideo.src;
+				miniVideo.src = "";
+				remoteVideo.src = "";
+			}, 500);
+			miniVideo.style.opacity = 0;
+			remoteVideo.style.opacity = 0;
+			resetStatus();
+		}
+		function transitionToDone() {
+			console.log("Video conferencia en estado DONE.");
+			localVideo.style.opacity = 0;
+			remoteVideo.style.opacity = 0;
+			miniVideo.style.opacity = 0;
+			setStatus("Has abandonado la llamada. <a href=\"{room_link}\">Haz click aquí para</a> reestablecer.");
+		}
+		function enterFullScreen() {
+			console.log("Entrando en pantalla completa.");
+			remote.webkitRequestFullScreen();
+		}
+
+		if (!window.WebSocket)
+			alert("Este navegador no soporta el WebSocket");
+
+		initialize();
+	</script>
+</body>
+</html>
+<!-- END: main -->
