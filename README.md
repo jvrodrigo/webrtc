@@ -7,11 +7,23 @@ en <a href="http://webrtc-jvrodrigo.rhcloud.com/webrtc/index.jsp">http://webrtc-
 <p>Proyecto WEBRTC desplegado en un servidor Java Tomcat 7, con un servidor Jetty embebido 
 y utilizando las reglas de WebSocket JSR 356(Java API for WebSockets)</p>
 <code>
-@ServerEndpoint(value = "/")
+import java.io.IOException;
+import java.util.logging.Logger;
+ 
+import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.CloseReason.CloseCodes;
+import javax.websocket.server.ServerEndpoint;
+ 
+@ServerEndpoint(value = "/game")
 public class WordgameServerEndpoint {
-  private Logger logger = Logger.getLogger(this.getClass().getName());
-  
-  @OnOpen
+ 
+    private Logger logger = Logger.getLogger(this.getClass().getName());
+ 
+    @OnOpen
     public void onOpen(Session session) {
         logger.info("Connected ... " + session.getId());
     }
@@ -21,7 +33,7 @@ public class WordgameServerEndpoint {
         switch (message) {
         case "quit":
             try {
-                
+                session.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "Game ended"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -31,8 +43,8 @@ public class WordgameServerEndpoint {
     }
  
     @OnClose
-    public void onClose(Session session) {
-        logger.info(String.format("Session %s ", session.getId()));
+    public void onClose(Session session, CloseReason closeReason) {
+        logger.info(String.format("Session %s closed because of %s", session.getId(), closeReason));
     }
 }
 </code>
