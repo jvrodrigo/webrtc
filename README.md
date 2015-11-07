@@ -18,7 +18,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.CloseReason.CloseCodes;
 import javax.websocket.server.ServerEndpoint;
-
 @ServerEndpoint(value = "/")
 public class SignalingWebSocket {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
@@ -26,7 +25,6 @@ public class SignalingWebSocket {
 	public void onOpen(Session session) {
 		logger.info("Connected ... " + session.getId());
 	}
-
 	@OnMessage
 	public String onMessage(String message, Session session) {
             try {
@@ -38,7 +36,6 @@ public class SignalingWebSocket {
         }
         return message;
     }
- 
     @OnClose
     public void onClose(Session session) {
         logger.info(String.format("Session %s closed", session.getId()));
@@ -49,13 +46,11 @@ public class SignalingWebSocket {
 <code>
 function openChannel() {
 		
-	console.log("Abriendo el canal.");
+	console.log("Abriendo el WebSocket...");
 	var location = "ws://{server_name}:8000/webrtc/";
-
-	console.log(location);
 	channel = new WebSocket(location);
-	channel.onopen = onChannelOpened;
 	
+	channel.onopen = onChannelOpened;
 	channel.onmessage = onChannelMessage;
 	channel.onclose = onChannelClosed;
 	channel.onerror = onChannelError;
