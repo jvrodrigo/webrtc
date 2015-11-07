@@ -9,7 +9,6 @@ y utilizando las reglas de WebSocket JSR 356(Java API for WebSockets)</p>
 <code>
 import java.io.IOException;
 import java.util.logging.Logger;
- 
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -17,9 +16,9 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.CloseReason.CloseCodes;
 import javax.websocket.server.ServerEndpoint;
- 
-@ServerEndpoint(value = "/game")
-public class SignaligWebSocket {
+
+@ServerEndpoint(value = "/")
+public class SignalingWebSocket {
  
     private Logger logger = Logger.getLogger(this.getClass().getName());
  
