@@ -1,5 +1,5 @@
 # WEBRTC
-<h1>Aplicacion WebRtc para realizar videoconferencias con navegadores web Firefox / Chome / Opera</h1>
+<h1>Aplicacion WebRTC para realizar videoconferencias con navegadores web Firefox / Chome / Opera</h1>
 
 <h2>Puedes ver el ejemplo de esta aplicación desplegada en un servidor JBoss(Tomcat 7) en <strong>Openshift</strong>
 en <a href="http://webrtc-jvrodrigo.rhcloud.com/webrtc/index.jsp">http://webrtc-jvrodrigo.rhcloud.com/webrtc</a></h2>
@@ -17,18 +17,16 @@ import javax.websocket.Session;
 import javax.websocket.CloseReason.CloseCodes;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/")
+@ServerEndpoint(value = "/game")
 public class SignalingWebSocket {
- 
-    private Logger logger = Logger.getLogger(this.getClass().getName());
- 
-    @OnOpen
-    public void onOpen(Session session) {
-        logger.info("Connected ... " + session.getId());
-    }
- 
-    @OnMessage
-    public String onMessage(String message, Session session) {
+	private Logger logger = Logger.getLogger(this.getClass().getName());
+	@OnOpen
+	public void onOpen(Session session) {
+		logger.info("Connected ... " + session.getId());
+	}
+
+	@OnMessage
+	public String onMessage(String message, Session session) {
             try {
                 
             } catch (IOException e) {
