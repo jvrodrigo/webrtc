@@ -1,18 +1,17 @@
-# webrtc
-#Aplicacion WebRtc para realizar videoconferencias con navegadores web Firefox / Chome / Opera
+# WEBRTC
+<h1>Aplicacion WebRtc para realizar videoconferencias con navegadores web Firefox / Chome / Opera</h1>
 
-#Puedes ver el ejemplo de esta aplicación desplegada en un servidor JBoss(Tomcat 7) en <strong>Openshift</strong>
-en <a href="http://webrtc-jvrodrigo.rhcloud.com/webrtc/index.jsp">http://webrtc-jvrodrigo.rhcloud.com/webrtc</a>
+<h2>Puedes ver el ejemplo de esta aplicación desplegada en un servidor JBoss(Tomcat 7) en <strong>Openshift</strong>
+en <a href="http://webrtc-jvrodrigo.rhcloud.com/webrtc/index.jsp">http://webrtc-jvrodrigo.rhcloud.com/webrtc</a></h2>
 
 <p>Proyecto WEBRTC desplegado en un servidor Java Tomcat 7, con un servidor Jetty embebido 
 y utilizando las reglas de WebSocket JSR 356(Java API for WebSockets)</p>
 <code>
 @ServerEndpoint(value = "/")
 public class WordgameServerEndpoint {
- 
-    private Logger logger = Logger.getLogger(this.getClass().getName());
- 
-    @OnOpen
+  private Logger logger = Logger.getLogger(this.getClass().getName());
+  
+  @OnOpen
     public void onOpen(Session session) {
         logger.info("Connected ... " + session.getId());
     }
