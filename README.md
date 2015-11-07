@@ -17,12 +17,10 @@ y utilizando las reglas de WebSocket JSR 356(Java API for WebSockets)</p>
  import javax.websocket.CloseReason.CloseCodes;
  import javax.websocket.server.ServerEndpoint;
 
- @ServerEndpoint(value = "/game")
   
- public class WordgameServerEndpoint {
- 
-    private Logger logger = Logger.getLogger(this.getClass().getName());
- 
+  @ServerEndpoint(value = "/game")
+  public class WordgameServerEndpoint {
+   private Logger logger = Logger.getLogger(this.getClass().getName());
     @OnOpen
     public void onOpen(Session session) {
         logger.info("Connected ... " + session.getId());
