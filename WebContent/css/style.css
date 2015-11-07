@@ -1,46 +1,141 @@
-
 @font-face{
   font-family:"Futura Bk BT Book";
-  src: url('../file/Futura.ttf') format('TrueType');
+  src: url('../file/futura.ttf') format('TrueType');
 }
+
 body {
 	padding: 0px;
 	margin: 0px;
-	background-color: black;
+	background-color: #444;
 	font-family: Futura Bk BT Book;
 }
-
+ul{
+	list-style: none;
+}
+li{
+	
+}
+input {
+	font-size:inherit;
+	font-family: Futura Bk BT Book;
+}
+form{
+	background-color: #FFF;
+	padding: 10px;
+	border: 1px solid #666;
+	border-radius: 4px;
+	margin:0px auto;
+}
+table{
+	border: 1px solid #666;
+	border-radius: 4px;
+	margin:0px auto;
+}
+#content{
+	margin: 0px auto;
+	padding: 10px;
+	background: #999;
+	width: 90%;
+}
 #footer {
 	position: absolute;
 	z-index: 100;
 	color: white;
 }
+#alert-message{
+	border: 1px solid #F00;
+	border-radius: 4px;
+	background-color: #DDD;
+	color: #900;
+	margin:10px auto;
+	width: inherit;
+	padding: 10px;
+	text-align: center;
+}
+#calling-on{
+	display: none;
+	text-align: center;
+	background: #AF9;
+	padding: 10px 0px;
+	vertical-align: super;
+}
+#caller{
+	font-weight: bold;
+	font-size: x-large;
+}
+#hang-up{
 
-:-webkit-full-screen {
-  /* properties */
+	text-align:center;
+	padding:0px;
+	background: #F00 url("../images/hangup.png") no-repeat scroll 50% 50% / 90% 90% border-box;
+	border:4px solid white;
+	border-radius:50%;
+	width:50px;
+	height: 50px;
+	 -webkit-transition: border 0.5s, background-color 0.5s; /* Safari */
+    transition: border 0.5s,background-color 0.5s;
+    cursor: pointer;
+    display: inline-block;
+    margin: 20px;
+}
+#hang-up:HOVER{
+	
+	background-color:#F66;
+	border:8px solid #FFF;
+}
+#lift{
+
+	text-align:center;
+	padding:0px;
+	background: #0C0 url("../images/call.png") no-repeat scroll 50% 50% / 90% 90% border-box;
+	border:4px solid white;
+	border-radius:50%;
+	width:50px;
+	height: 50px;
+	 -webkit-transition: border 0.5s, background-color 0.5s; /* Safari */
+    transition: border 0.5s,background-color 0.5s;
+    cursor: pointer;
+    display: inline-block;
+    margin: 20px;
+}
+#lift:HOVER{
+	
+	background-color:#6F6;
+	border:8px solid #FFF;
 }
 
-:-moz-full-screen {
-  /* properties */
+.users-list-div{
+	margin:0px auto;
+	background: white;
 }
-
-:-ms-fullscreen {
-  /* properties */
+.users-list-ul{
+	margin: 0px auto;
+	padding: 10px 20px;
+	list-style: none;
+	text-align: center;
+	width: inherit;
+	box-shadow: 2px 0px 5px #888888;
 }
-
-:full-screen { /*pre-spec */
-  /* properties */
+.users-list-li{
+	margin: 10px auto;
+	padding: 0px;
+	text-align: center;
+	border: 1px solid #666;
+	border-radius: 4px;
+	cursor: pointer;
+	background: white;
+	word-wrap: break-word;
+	box-shadow: 2px 2px 5px #888888;
+	width: 50%;
+	
 }
-
-:fullscreen { /* spec */
-  /* properties */
+#myName{
+	font-weight: bold;
 }
-
-/* deeper elements */
-:-webkit-full-screen video {
-  width: 80%;
-  height: 80%;
+#myToken{
+	font-weight: bold;
 }
+/* ------------ WEBRTC STYLE -----------------*/
 #card {
 	position: absolute;
 	width: 100%;

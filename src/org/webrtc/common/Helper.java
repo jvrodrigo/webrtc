@@ -14,14 +14,15 @@ import net.sf.jtpl.Template;
 
 public class Helper {
 
-	public static final String SERVER = "http://localhost:8080";
+	//public static final String SERVER = "http://localhost:8080";
 	
+	public static final String SERVER = "http://webrtc-jvrodrigo.rhcloud.com";
 	/** Used to generate a random room number */
 	public static String generate_random(int len) {
 		String generated = "";
 		for(int i=0; i<len; i++) {
-			int index = ((int) Math.round(Math.random()*10))%10;
-			generated += "0123456789".charAt(index);
+			int index = ((int) Math.round(Math.random()*62))%62;
+			generated += "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(index);
 		}		
 		return generated;
 	}

@@ -33,20 +33,18 @@ public class MessagePageServlet extends HttpServlet {
 		    if(other_user!=null && !other_user.equals("")) {
 		    	// special case the loopback scenario
 		    	if(other_user.equals(user)) {
-		    		
 		            message = message.replace("\"offer\"", "\"answer\"");
 		            message = message.replace("a=crypto:0 AES_CM_128_HMAC_SHA1_32", "a=xrypto:0 AES_CM_128_HMAC_SHA1_32");
 		    	}
-		    	if(SignalingWebSocket.send(Helper.make_token(room, other_user), message)){
+		    	if(SignalingWebSocket.sendPeer(Helper.make_token(room, other_user), message)){
 		    		System.out.println("OK - Mensaje enviado al usuario " + other_user + " FIN");
 		    		resp.setContentType("text/html");
 		    		resp.setStatus(HttpServletResponse.SC_OK);
 		    	}else{
+		    		System.out.println("ERROR - Mensaje no enviado al usuario " + other_user + " FIN");
 		    		resp.setContentType("text/html");
-		    		resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		    		resp.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
 		    	}
-		    	
-		    	
 		    }
 		}else {
 			logger.log(Level.WARNING, "Habitacion desconocida " + room_key);
@@ -54,7 +52,7 @@ public class MessagePageServlet extends HttpServlet {
 	}
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String message = Helper.get_string_from_stream(req.getInputStream());
-		System.out.println("ESTOY EN GET DE MESSAGE: " + message);
+		System.out.println("Mensaje recibido por GET: " + message);
 	
 	}
 	 

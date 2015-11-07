@@ -32,7 +32,7 @@ public class Room {
 		    	room.remove_user(user);
 		    	logger.info("Room " + room_key + " has state " + room.toString());
 		    	if(other_user!=null) {		    		
-		    		SignalingWebSocket.send(Helper.make_token(room, other_user), "{\"type\":\"bye\", \"user\":\"" + user + "\"}");
+		    		SignalingWebSocket.sendPeer(Helper.make_token(room, other_user), "{\"type\":\"bye\", \"user\":\"" + user + "\"}");
 			        logger.info("Sent BYE to " + other_user);
 			    }else {
 			    	room.delete();
