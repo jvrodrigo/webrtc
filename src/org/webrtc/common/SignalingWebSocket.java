@@ -25,9 +25,7 @@ public class SignalingWebSocket  {
 	private String userName;
 	private Session session;
 	private String peerToken;
-	
-	
-		
+
 	@OnOpen
 	public void onOpen(Session session) {
 		logger.info("Conexion abierta");

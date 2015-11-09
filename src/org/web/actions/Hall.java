@@ -48,10 +48,12 @@ public class Hall extends HttpServlet{
 					+ user.getValue().getToken());
 			if(!this.user.getToken().equals(user.getValue().getToken())){
 				userListLi = userListLi + "<li title=\"Pulse para llamar al usuario\" class=\"users-list-li\" onclick=\"calling(this)\" " +
-					"id=\"" + user.getValue().getToken() + "\">" +
-					"<a href=\"/webrtc/?r=" + user.getValue().getToken() + this.user.getToken() + "\">Usuario:" +
-					user.getValue().getName() + 
-					"</a></li>";
+					"id=\"" + user.getValue().getToken() + "\"><p>" +
+//					"<a href=\"/webrtc/?r=" + user.getValue().getToken() + this.user.getToken() + "\">Usuario:" +
+//					user.getValue().getName() + 
+//					"</a>" +
+					"Usuario: " + user.getValue().getName() + 
+					"</p></li>";
 			}
 			
 		}

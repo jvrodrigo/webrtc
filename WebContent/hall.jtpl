@@ -2,8 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" href="/webrtc/images/icon.png" type="image/png" sizes="16x16">
 <link href="/webrtc/css/style.css" rel="stylesheet" type="text/css">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bienvenido a la Sala Principal</title>
 </head>
 <body>
@@ -17,7 +19,7 @@
 		<h2>Estas en la Sala Principal donde puedes contactar con los
 			demas usuarios</h2>
 		<div id="calling-on">
-			Te está llamando:
+			Te llama:
 			<span id="caller"></span>
 			<button onclick="acceptCall()" id="lift"></button><button onclick="hangUp()" id="hang-up"></button>
 		</div>
@@ -108,15 +110,17 @@
 						+ msg.username);
 				var userToken = document.createTextNode("Usuario: "
 						+ msg.username);
-				var hiperLink = document.createElement("a");
-				hiperLink.setAttribute('href', host + ":" + port
-						+ "/webrtc/?r=" + msg.usertoken
-						+ myToken.innerHTML);
-				hiperLink.setAttribute('title', "Pulse para llamar al usuario "
-						+ msg.username);
-				hiperLink.appendChild(userToken);
-				user.appendChild(hiperLink);
-
+// 				var hiperLink = document.createElement("a");
+// 				hiperLink.setAttribute('href', host + ":" + port
+// 						+ "/webrtc/?r=" + msg.usertoken
+// 						+ myToken.innerHTML);
+// 				hiperLink.setAttribute('title', "Pulse para llamar al usuario "
+// 						+ msg.username);
+// 				hiperLink.appendChild(userToken);
+// 				user.appendChild(hiperLink);
+				var paragrap = document.createElement("p");
+				paragrap.appendChild(userToken);
+				user.appendChild(paragrap);
 				userList.appendChild(user);
 			}
 			if (msg.type == "deleteuser") {

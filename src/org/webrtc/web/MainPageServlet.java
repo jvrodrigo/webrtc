@@ -21,7 +21,7 @@ public class MainPageServlet extends HttpServlet {
 	//public static final String PATH = "webrtc/videoconferencia";
 	public static final String PATH = "webrtc/";
 	private static final String INDEX = "http://webrtc-jvrodrigo.rhcloud.com/webrtc/index.jsp";
-	
+//	private static final String INDEX = "http://localhost:8080/webrtc/index.jsp";
 	/** Renders the main page. When this page is shown, we create a new channel to push asynchronous updates to the client.*/
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {		
 		//String PATH = req.getContextPath().replace("/", "");

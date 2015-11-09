@@ -3,18 +3,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="icon" href="/webrtc/images/icon.png" type="image/png" sizes="16x16">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link href="/webrtc/css/style.css" rel="stylesheet" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bienvenido a WEBRTC</title>
 </head>
 <body onload="acceptField()">
 <div id="content">
 <h1>Bienvenido a WEBRTC</h1>
 <h2>Introduce un nombre de usuario para conectacte a la Sala Principal</h2>
-	<form  action="hall" method="post" id="form-to-hall" >
+	<form  action="hall" method="post" id="form-to-hall" accept-charset="ISO-8859-1">
 	<label for="userName">Nombre de usuario</label>
 		<input id="userName" onkeyup="acceptField()" name="userName" autofocus="autofocus"/>
-		<input id="submit-button" type="submit" disabled="disabled"/>
+		<input id="submit-button" type="submit" disabled="disabled" value="Entrar"/>
 	</form>
 	<p id="alert-message">El nombre de usuario debe de tener más de 2 carácteres</p>
 	</div>

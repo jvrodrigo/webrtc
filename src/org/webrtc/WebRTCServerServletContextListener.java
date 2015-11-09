@@ -2,8 +2,6 @@ package org.webrtc;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.websocket.server.ServerEndpoint;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import java.net.InetAddress;
@@ -23,16 +21,17 @@ public class WebRTCServerServletContextListener implements ServletContextListene
 	public void contextInitialized(ServletContextEvent event) {
 		try {
 			// 1) Create a Jetty server with the 8081 port.
-			//server = new Server(8081);
+			int port = 8000; // OpenShift WebSocket port support
+			//server = new Server(8081); // Localhost port support
 			
-			InetAddress address = InetAddress.getByName("127.5.78.129");
+			InetAddress address = InetAddress.getByName("127.5.78.129"); // OpenShift Ip Address
 			//InetAddress address = InetAddress.getByName("localhost");
 			
 			//InetSocketAddress bindAddr = new InetSocketAddress(address,8081);
-		    InetSocketAddress bindAddr = new InetSocketAddress(address,8000);
+		    InetSocketAddress bindAddr = new InetSocketAddress(address,port);
 			server = new Server(bindAddr);
 			
-			logger.info("Servidor Jetty con la referencia -> " + server);
+			logger.info("Servidor Jetty: ip -> " + server.getConnectors()[0].getName());
 			
 			// 2) Register SingalingWebSocketHandler in the Jetty server instance.
 			WebRTCWebSocketHandler webRTCWebSocketHandler = new WebRTCWebSocketHandler();

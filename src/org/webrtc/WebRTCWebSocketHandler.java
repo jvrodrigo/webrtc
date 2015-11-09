@@ -1,13 +1,8 @@
 package org.webrtc;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.ClientEndpoint;
-import javax.websocket.server.ServerEndpoint;
-
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
-import org.eclipse.jetty.websocket.WebSocket.Connection;
-import org.webrtc.common.SignalingWebSocket;
 
 public class WebRTCWebSocketHandler extends WebSocketHandler {
 	@Override
