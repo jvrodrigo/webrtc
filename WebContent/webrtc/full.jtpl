@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="theme-color" content="#999966">
 <link rel="icon" href="/webrtc/images/icon.png" type="image/png" sizes="16x16">
 <style type="text/css">
   a:link { color: #ffffff; }
