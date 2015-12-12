@@ -22,12 +22,12 @@ public class WebRTCServerServletContextListener implements ServletContextListene
 		try {
 			// 1) Create a Jetty server with the 8081 port.
 			int port = 8000; // OpenShift WebSocket port support
+//			int port = 8081; // Localhost port support WebSocket port support
 			//server = new Server(8081); // Localhost port support
 			
 			InetAddress address = InetAddress.getByName("127.5.78.129"); // OpenShift Ip Address
-			//InetAddress address = InetAddress.getByName("localhost");
+//			InetAddress address = InetAddress.getByName("localhost");// Localhost Ip Address
 			
-			//InetSocketAddress bindAddr = new InetSocketAddress(address,8081);
 		    InetSocketAddress bindAddr = new InetSocketAddress(address,port);
 			server = new Server(bindAddr);
 			
