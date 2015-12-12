@@ -21,11 +21,15 @@ public class SignalingWebSocket  {
 	private static final Logger logger = Logger.getLogger(SignalingWebSocket.class
 			.getName());
 	private static final ConcurrentMap<String, SignalingWebSocket> channels = new ConcurrentHashMap<String, SignalingWebSocket>();
+	private Session session;
 	private String userHall;
 	private String userName;
-	private Session session;
 	private String peerToken;
-
+	
+	/**
+	 * Método público para abrir el socket ServerEndPoint
+	 * @param session
+	 */
 	@OnOpen
 	public void onOpen(Session session) {
 		logger.info("Conexion abierta");
@@ -34,15 +38,17 @@ public class SignalingWebSocket  {
 		this.session = session;
 		
 	}
-
-	/**	check if message is token declaration and then store mapping between the token and this ws. */
 	
+	/**
+	 * Método público para recibir los mensajes enviados por los clientes al socket
+	 * @param message
+	 */
 	@OnMessage
-	public void onMessage(String data) {
-		System.out.println("Se recibe -> " + data);
+	public void onMessage(String message) {
+		System.out.println("Se recibe -> " + message);
 		JSONObject jsonObject;
 		try {
-			jsonObject = new JSONObject(data);
+			jsonObject = new JSONObject(message);
 
 			if (!jsonObject.isNull("type")) {
 
@@ -71,6 +77,11 @@ public class SignalingWebSocket  {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Método publico para cerrar las conexiones con el socket
+	 * @param session
+	 */
 	@OnClose
 	public void onClose(Session session){
 		try{
@@ -90,6 +101,7 @@ public class SignalingWebSocket  {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * Método para enviar la oferta, respuesta, ice candidates etc, de webrtc
 	 * @param token
@@ -105,6 +117,7 @@ public class SignalingWebSocket  {
 		}
 		return success;
 	}
+	
 	/**
 	 * Método estatico para enviar la señal de conexión de un usuario a la sala
 	 * Principal
@@ -135,7 +148,7 @@ public class SignalingWebSocket  {
 	}
 
 	/**
-	 * Método estatico para enviar la señal de deconexión del usuario a los
+	 * Método estatico privado para enviar la señal de deconexión del usuario a los
 	 * demás usuarios de la sala Principal
 	 * 
 	 * @param userToken
@@ -162,7 +175,7 @@ public class SignalingWebSocket  {
 	}
 
 	/**
-	 * Método estatico para llamar a un usuario para realizar la llamada VoIP,
+	 * Método estatico privado para llamar a un usuario para realizar la llamada VoIP,
 	 * el usuario entra en la sala y envia la peticion a otro usuario
 	 * 
 	 * @param calling
@@ -186,7 +199,7 @@ public class SignalingWebSocket  {
 	}
 
 	/**
-	 * Método para enviar el mensaje final
+	 * Método público para enviar el mensaje desde el socket a los clientes de la sala principal
 	 * 
 	 * @param message
 	 */
@@ -200,6 +213,7 @@ public class SignalingWebSocket  {
 			}
 		}
 	}
+	
 	/**
 	 * Método para enviar los datos de WebRTC para la videoconexión
 	 * 
