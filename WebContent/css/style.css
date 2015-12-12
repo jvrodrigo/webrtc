@@ -3,22 +3,30 @@
   src: url('../file/futura.ttf') format('TrueType');
 }
 @media only screen and (max-width: 500px){
-	body { font-size:100%;}
+	body { font-size:200%;}
 }
 @media only screen and (max-width: 750px){
-	body { font-size:120%;}
+	body { font-size:160%;}
 }
 @media only screen and (max-width: 1000px) {
-	body { font-size:140%;}
+	body { font-size:120%;}
 }
 @media only screen and (max-width: 1250px) {
-	body { font-size:160%;}
+	body { font-size:100%;}
 }
 body {
 	padding: 0px;
 	margin: 0px;
-	background-color: #444;
+	background-color: rgb(172, 187, 231);
 	font-family: Futura Bk BT Book;
+}
+#content{
+	margin: 0 auto;
+	margin-top:16px;
+	padding: 0px;
+	background: rgb(189, 217, 233) none repeat scroll 0% 0%;
+	width: 90%;
+	box-shadow:10px 10px 5px #888888;
 }
 ul{
 	list-style: none;
@@ -32,29 +40,55 @@ input {
 }
 input#userName{
 	width:100%;
+	margin: 0 auto;
+	max-width: 50%;
+	display: inherit;
 }
 form{
 	background-color: #FFF;
 	padding: 10px;
 	border: 1px solid #666;
 	border-radius: 4px;
-	margin:0px auto;
+	margin:16px auto;
 }
 table{
 	border: 1px solid #666;
 	border-radius: 4px;
 	margin:0px auto;
 }
+div.header{
+	height: 100px;
+	width: 100%;
+	margin:0px;
+	background-color: #FFF;
+	z-index: 0;
+	background-color:#FFF;
+    background-repeat: no-repeat;
+	background-position:right top;
+    background-origin: content-box;
+	background-image:url(/webrtc/images/icon-190x190.png);
+	background-size: 100px 100px; 
+}
+h1{
+	max-width:70%;
+	z-index: 0;
+	padding: 0px;
+	background-color: rgb(189, 217, 233);
+	border-radius: 0px 20px 0px 0px; 
+	height: 100%;
+	margin: 0px;
+	top:10px;
+	position: relative;
+	padding: 8px;
+}
+h2{
+	padding: 8px;
+}
 #form-to-hall{
 	text-align: center;
 	margin: 0 auto;
 }
-#content{
-	margin: 0px auto;
-	padding: 10px;
-	background: #999;
-	width: 90%;
-}
+
 #footer {
 	position: absolute;
 	z-index: 100;
