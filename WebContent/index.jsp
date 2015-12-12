@@ -13,7 +13,10 @@
 </head>
 <body onload="acceptField()">
 <div id="content">
+<div class="header">
 <h1>Bienvenido a WEBRTC</h1>
+
+</div>
 <h2>Introduce un nombre de usuario para conectacte a la Sala Principal</h2>
 	<form  action="hall" method="post" id="form-to-hall" accept-charset="ISO-8859-1">
 	<label for="userName">Nombre de usuario</label>
