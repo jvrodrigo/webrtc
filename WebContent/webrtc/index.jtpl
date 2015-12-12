@@ -14,7 +14,7 @@
 <!-- <script type="text/javascript" src="js/ambilight.js"></script> -->
 <script type="text/javascript" src="/webrtc/js/RecordRTC.js"></script>
 <script type="text/javascript" src="/webrtc/js/mediaControls.js"></script>
-<script type="text/javascript" src="/webrtc/js/bootstrap.js"></script>
+<!-- <script type="text/javascript" src="/webrtc/js/bootstrap.js"></script> -->
 
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -22,7 +22,13 @@
 </head>
 <body onLoad="javascript:preLoader()">
 	<div id="footer">Iniciando...</div>
-	<div id="container">	
+	<div id="container">
+		<div id="hall-form">
+		<form  action="hall" method="post" id="form-to-hall" accept-charset="ISO-8859-1">
+			<input id="userName" name="{userName}" type="hidden"/>
+			<input id="submit-button" type="submit"  value="Volver a la Sala Principal"/>
+		</form>
+		</div>
 		<div id="card">
 			<div id="chat" class="ui-widget-content ui-draggable ui-draggable-handle ui-resizable">
 				<div id="chatControls">
@@ -219,7 +225,7 @@ var remoteStream;
 var channel;
 var channelReady = false;
 var pc;
-var initiator = {initiator};
+var initiator = '{initiator}';
 var started = false;
 var footer;
 var card;
@@ -260,6 +266,7 @@ function openChannel() {
 		
 	console.log("Abriendo el canal.");
 	var location = "ws://{server_name}:8000/webrtc/";
+// 	var location = "ws://{server_name}:8081/webrtc/";
 
 	console.log(location);
 	channel = new WebSocket(location);
@@ -298,43 +305,6 @@ function onChannelClosed() {
 
 function getUserMedia() {
 	try {
-		// Compartir escritorio
-		// for chrome
-		//mandatory: {chromeMediaSource: 'screen'}
-		// or desktop-Capturing
-		//mandatory: {chromeMediaSource: 'desktop'}
-		//firefox
-		//mediaSource: 'window' || 'screen'
-
-		/*navigator.getUserMedia({
-			// for Firefox
-			
-			video: {
-		        /*mandatory: {
-		          chromeMediaSource: 'screen',
-		          maxWidth: 500,
-		          maxHeight: 300,
-		          minFrameRate: 1,
-		          maxFrameRate: 5
-		          "mediaSource": "window",
-				"maxWidth": 1920,
-				"maxHeight": 1080,
-				"minAspectRatio": 1.77
-		        },
-		        optional: []*/
-		        // firefox
-		        /*
-		        mediaSource: "screen", // window, screen
-	            mozMediaSource: "screen",
-	            //width : {min: 640, max: 960},
-	            //height : {min: 480, max: 720},
-	            //frameRate : {min: 15, max: 30}
-				
-			},
-			screen: true,
-			oneway: true
-			
-		},onUserMediaSuccess, onUserMediaError);*/
 		navigator.getUserMedia({
 		audio : true,
 		video : true
