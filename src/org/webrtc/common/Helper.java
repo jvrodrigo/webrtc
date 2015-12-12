@@ -17,32 +17,54 @@ public class Helper {
 	//public static final String SERVER = "http://localhost:8080";
 	
 	public static final String SERVER = "http://webrtc-jvrodrigo.rhcloud.com";
-	/** Used to generate a random room number */
-	public static String generate_random(int len) {
+	/**
+	 * Genera numeros aleatorios para crear los tokens
+	 * @param len
+	 * @return
+	 */
+	public static String generate_random(int length) {
 		String generated = "";
-		for(int i=0; i<len; i++) {
+		for(int i=0; i<length; i++) {
 			int index = ((int) Math.round(Math.random()*62))%62;
 			generated += "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(index);
 		}		
 		return generated;
 	}
 	
+	/**
+	 * Método para remplazar el caracter "-" de las cadena de texto  
+	 * @param key
+	 * @return
+	 */
 	public static String sanitize(String key){  
 		return key.replace("[^a-zA-Z0-9\\-]", "-");
 	}
 	
-	/**@return a token for a given room instance and a participant */
+	/**
+	 * Método para crear un token con la habitación y del token del usuario
+	 * @param room
+	 * @param user
+	 * @return un String con el formato "room:Room/userToken:String"
+	 */
 	public static String make_token(Room room, String user) {		 
 		return room.key() + "/" + user;
 	}
 	
-	/**@return a token for a given room key and a participant */
+	/**
+	 * Método para crear un token con el nombre de la habitacion y token del usuario
+	 * @param room_key
+	 * @param user
+	 * @return un String con el formato "room:Room/userToken:String"
+	 */
 	public static String make_token(String room_key, String user) {		 
 		return room_key + "/" + user;
 	}
 	
-	/**Check if the token in parameter corresponds to an existent room that has a participant identified in the token 
-	 * @return true if token is valid, false otherwise. */
+	/**
+	 * Método para comprobar si el token la habitación
+	 * @param token
+	 * @return
+	 */
 	public static boolean is_valid_token(String token) {
 		boolean valid = false;
 		Room room = Room.get_by_key_name(get_room_key(token));
@@ -52,7 +74,11 @@ public class Helper {
 		return valid;
 	}
 	
-	/** @return room key from the token parameter */
+	/**
+	 * Metodo para obtener el token de la habitacion de la concatenacion del token de la habitacion y el usuario "roomToken/userToken"
+	 * @param token
+	 * @return
+	 */
 	public static String get_room_key(String token) {
 		String room_key = null;
 		if(token!=null) {
@@ -62,7 +88,11 @@ public class Helper {
 		}
 		return room_key;
 	}
-	/** @return user from the token parameter */
+	/** 
+	 * Metodo para obtener el token del usuario de la concatenacion del token de la habitacion y el usuario "roomToken/userToken"
+	 * @param token
+	 * @return
+	 */
 	public static String get_user(String token) {
 		String user = null;
 		if(token!=null) {
@@ -72,7 +102,11 @@ public class Helper {
 		}
 		return user;
 	}
-	
+	/**
+	 * Devuelve una cadena de texto para de la direccion del servidor STUN/TURN
+	 * @param stun_server
+	 * @return
+	 */
 	public static String make_pc_config(String stun_server) {		
 		if(stun_server!=null && !stun_server.equals(""))	
 			return "STUN " + stun_server;		 
@@ -82,7 +116,11 @@ public class Helper {
 	}
 
 	
-	/** Create a {@link Map} from a {@link String} representing an URL query */
+	/** 
+	 * Devuelve un map<string, string> de una petición url con el formato -> nombre=valor
+	 * @param query
+	 * @return
+	 */
 	public static Map<String, String> get_query_map(String query) {  
 	    String[] params = query.split("&");  
 	    Map<String, String> map = new HashMap<String, String>();  
@@ -94,7 +132,11 @@ public class Helper {
 	    return map;  
 	} 
 	
-	/** Create a {@link String} from an {@link InputStream} */
+	/**
+	 *  Devuelve una cadena de texto de un InputStream
+	 * @param input
+	 * @return
+	 */
 	public static String get_string_from_stream(InputStream input) {
 		String output = null;
 		try {
@@ -107,7 +149,12 @@ public class Helper {
 		return output;
 	}
 	
-	/** Generate an HTML file by using JTPL template engine to replace variables with their values provided in the map. */
+	/** 
+	 * Método para generar una página HTML desde una plantilla JTPL preparada para remplazar las variables con los valores asignados en un map<String,String>
+	 * @param file
+	 * @param values
+	 * @return
+	 */
 	public static String generatePage(File file, Map<String, String> values) {
 		String block = "main"; 
 		String output = null;
