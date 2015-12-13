@@ -6,16 +6,18 @@
 <link rel="icon" href="/webrtc/images/icon-16x16.png" type="image/png" sizes="16x16">
 <link rel="icon" href="/webrtc/images/icon-190x190.png" type="image/png" sizes="190x190">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link href="/webrtc/css/style.css" rel="stylesheet" type="text/css">
-<meta name="theme-color" content="#999999">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <link href="/webrtc/css/style.css" rel="stylesheet" type="text/css"> -->
+<link href="/webrtc/css/style.min.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="rgb(172, 187, 231)">
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 <title>Bienvenido a WEBRTC</title>
 </head>
 <body onload="acceptField()">
 <div id="content">
 <div class="header">
 <h1>Bienvenido a WEBRTC</h1>
-
+<div onclick="location.href='/webrtc'" class="logo-icon">
+</div>
 </div>
 <h2>Introduce un nombre de usuario para conectacte a la Sala Principal</h2>
 	<form  action="hall" method="post" id="form-to-hall" accept-charset="ISO-8859-1">

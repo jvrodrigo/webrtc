@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.webrtc.common.Helper;
 import org.webrtc.model.Room;
 
-/**The main UI page, renders the 'index.html' template.*/
+/** Pagina principal WebRTC para realizar la videoconferencia, renderiza la plantilla /webrtc/index.html*/
 public class MainPageServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -22,7 +22,9 @@ public class MainPageServlet extends HttpServlet {
 	public static final String PATH = "webrtc/";
 	private static final String INDEX = "http://webrtc-jvrodrigo.rhcloud.com/webrtc/index.jsp";
 //	private static final String INDEX = "http://localhost:8080/webrtc/index.jsp";
-	/** Renders the main page. When this page is shown, we create a new channel to push asynchronous updates to the client.*/
+	/** Pagina principal para realizar la video conferencia.
+	 * Cuando la pagina se muestra, se crea un nuevo canal para 
+	 * acualizar la información del cliente de manera asincrona */
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {		
 		//String PATH = req.getContextPath().replace("/", "");
 		String query = req.getQueryString();
@@ -34,13 +36,16 @@ public class MainPageServlet extends HttpServlet {
 			return;
 		}
 		Map<String, String> params = Helper.get_query_map(query);
-		String room_key    = Helper.sanitize(params.get("r"));
-	    if(room_key==null || room_key.equals("")) {
-	    	logger.info("Sin habitacion (room key)");
+		
+		String userName = "No userName";
+	    if(params.get("r")==null || params.get("r").equals("") || params.get("userName")==null || params.get("userName").equals("")) {
+	    	logger.info("Sin habitacion (room key) o sin nombre de usuario (userName)");
 	    	resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	    	resp.sendRedirect(INDEX);
 	        return;
 	    }else {
+	    	String room_key = Helper.sanitize(params.get("r"));
+	    	userName = Helper.sanitize(params.get("userName"));
 	    	String user = null;
 	        int initiator = 0;
 	        Room room = Room.get_by_key_name(room_key);
@@ -70,7 +75,7 @@ public class MainPageServlet extends HttpServlet {
 	        String server_name = req.getServerName();
 	        int  server_port   = req.getServerPort();
 	        String room_link = "http://"+server_name+":"+server_port+"/webrtc/?r=" + room_key;	        
-	        String username = "UserName";
+	        
 	        setToken(Helper.make_token(room_key, user));
 	        setRoomKey(room_key);
 	        String pc_config = Helper.make_pc_config("");
@@ -80,8 +85,8 @@ public class MainPageServlet extends HttpServlet {
 	        template_values.put("PATH",  PATH);
 	        template_values.put("token", token);
 	        template_values.put("me", user);
-	        template_values.put("username", username);
-	        template_values.put("room_key", room_key);
+	        template_values.put("userName", userName);
+	        template_values.put("room_key", getRoomKey());
 	        template_values.put("room_link", room_link);
 	        template_values.put("initiator", ""+initiator);
 	        template_values.put("pc_config", pc_config);

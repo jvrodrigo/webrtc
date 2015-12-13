@@ -5,15 +5,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="icon" href="/webrtc/images/icon-16x16.png" type="image/png" sizes="16x16">
 <link rel="icon" href="/webrtc/images/icon-190x190.png" type="image/png" sizes="190x190">
-<meta name="theme-color" content="#999999">
-<link rel="stylesheet" type="text/css" href="/webrtc/css/style.css">
+<meta name="theme-color" content="rgb(172, 187, 231)">
+<!-- <link rel="stylesheet" type="text/css" href="/webrtc/css/style.css"> -->
+<link href="/webrtc/css/style.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- <script type="text/javascript" src="js/ambilight.js"></script> -->
-<script type="text/javascript" src="/webrtc/js/RecordRTC.js"></script>
-<script type="text/javascript" src="/webrtc/js/mediaControls.js"></script>
+<script type="text/javascript" src="/webrtc/js/RecordRTC.min.js"></script>
+<script type="text/javascript" src="/webrtc/js/mediaControls.min.js"></script>
+<!-- <script type="text/javascript" src="/webrtc/js/mediaControls.js"></script> -->
 <!-- <script type="text/javascript" src="/webrtc/js/bootstrap.js"></script> -->
 
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
@@ -21,11 +23,11 @@
 <title>Aplicacion WebRTC</title>
 </head>
 <body onLoad="javascript:preLoader()">
-	<div id="footer">Iniciando...</div>
+	<div id="panelInfo">Iniciando...</div>
 	<div id="container">
 		<div id="hall-form">
-		<form  action="hall" method="post" id="form-to-hall" accept-charset="ISO-8859-1">
-			<input id="userName" name="{userName}" type="hidden"/>
+		<form  action="hall" method="post" id="form-to-hall-rtc" accept-charset="ISO-8859-1">
+			<input id="formUserName" name="userName" type="hidden" value="{userName}"/>
 			<input id="submit-button" type="submit"  value="Volver a la Sala Principal"/>
 		</form>
 		</div>
@@ -225,9 +227,9 @@ var remoteStream;
 var channel;
 var channelReady = false;
 var pc;
-var initiator = '{initiator}';
+var initiator = {initiator};
 var started = false;
-var footer;
+var panelInfo;
 var card;
 var channelToken = '{token}';
 var roomKey = '{room_key}';
@@ -247,7 +249,7 @@ function initialize() {
 	localVideo = document.getElementById("localVideo");
 	miniVideo = document.getElementById("miniVideo");
 	remoteVideo = document.getElementById("remoteVideo");
-	footer = document.getElementById("footer");
+	panelInfo = document.getElementById("panelInfo");
 	resetStatus();
 	openChannel();
 	getUserMedia();
@@ -260,7 +262,7 @@ function resetStatus() {
 	}
 }
 function setStatus(state) {
-	footer.innerHTML = state;
+	panelInfo.innerHTML = state;
 }
 function openChannel() {
 		
@@ -743,6 +745,11 @@ if (!window.WebSocket)
 	alert("Este navegador no soporta el WebSocket");
 
 initialize();
+
+
+
+
+
 </script>
 </html>
 <!-- END: main -->
