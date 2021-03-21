@@ -8,6 +8,17 @@ It also have an clientUI write in HTML and js to handle the conexion and all the
 - Send files
 - Text chat
 
+## Java
+
+Goes to java 14
+
+## Maven 
+
+```bash
+mvn package
+mvn clean install
+```
+
 ### WebSocket JSR 356
 ```java
 import java.io.IOException;

@@ -85,7 +85,7 @@
 	</div>
 </body>
 <script type="text/javascript">
-//* COMPARTIR FICHEROS *//
+//* share files *//
 var fileName;
 var cancelFile = false;
 var cancelRecieveFile = false;
@@ -315,7 +315,7 @@ function getUserMedia() {
 	} catch (e) {
 		try {
 			navigator.getUserMedia("video,audio", onUserMediaSuccess, onUserMediaError);
-			console.log("Acceso solicitado al medio local con la antigüa sintaxis");
+			console.log("Acceso solicitado al medio local con la antigï¿½a sintaxis");
 		} catch (e) {
 			alert("getUserMedia() ha fallado. Esta la opcion(flag) de MediaStream activa(enabled) en -> about:flags?");
 			console.log("getUserMedia() ha fallado con la excepcion: " + e.message);
@@ -737,7 +737,7 @@ function transitionToDone() {
 	console.log("Video conferencia en estado DONE.");
 	//localVideo.style.opacity = 0;
 	remoteVideo.style.opacity = 0;
-	setStatus("Has abandonado la llamada. <a href=\"{room_link}\">Haz click aquí para</a> reestablecer.");
+	setStatus("Has abandonado la llamada. <a href=\"{room_link}\">Haz click aquï¿½ para</a> reestablecer.");
 }
 
 
